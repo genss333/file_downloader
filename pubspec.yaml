@@ -1,4 +1,4 @@
-name: file_downloader
+name: file_downloader_helper
 description: "A package build for esier to download file form internet, base64, or into temp"
 version: 1.0.0
 repository: https://github.com/genss333/file_downloader.git
