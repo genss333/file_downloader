@@ -1,10 +1,10 @@
 name: file_downloader
-description: "A new Flutter package project."
-version: 0.0.1
-homepage: https://flutter.dev
+description: "A package build for esier to download file form internet, base64, or into temp"
+version: 1.0.0
+repository: https://github.com/genss333/file_downloader.git
 
 environment:
-  sdk: ^3.5.4
+  sdk: ^3.5.1
   flutter: ">=1.17.0"
 
 dependencies:

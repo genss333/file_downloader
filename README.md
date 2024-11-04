@@ -1,39 +1,88 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# File Downloader
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+## Setup
+- path_provider : https://pub.dev/packages/path_provider
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
+## Example
 ```dart
-const like = 'sample';
+import 'package:flutter/material.dart';
+import 'package:your_package/download_file_service.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: FileDownloadPage(),
+    );
+  }
+}
+
+class FileDownloadPage extends StatefulWidget {
+  @override
+  _FileDownloadPageState createState() => _FileDownloadPageState();
+}
+
+class _FileDownloadPageState extends State<FileDownloadPage> {
+  String status = 'Idle';
+
+  Future<void> downloadFromUrl() async {
+    setState(() => status = 'Downloading file...');
+    final file = await DownloadFileService.downloadFileIntoTemp(
+      'https://example.com/file.pdf',
+      'file.pdf',
+    );
+    setState(() => status = file != null ? 'File downloaded successfully' : 'Download failed');
+  }
+
+  Future<void> downloadFromBase64() async {
+    const base64String = '...'; // Your base64-encoded string here
+    setState(() => status = 'Decoding Base64 and saving file...');
+    final file = await DownloadFileService.downloadFileFromBase64(
+      base64String: base64String,
+      fileName: 'decoded_file.pdf',
+    );
+    setState(() => status = file != null ? 'File decoded and saved' : 'Decoding failed');
+  }
+
+  Future<void> downloadToSpecificPath() async {
+    setState(() => status = 'Downloading file to specific path...');
+    await DownloadFileService.downloadFile(
+      'my_file.pdf',
+      'https://example.com/file.pdf',
+    );
+    setState(() => status = 'Download to specific path complete');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('File Download Example')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(status),
+            ElevatedButton(
+              onPressed: downloadFromUrl,
+              child: Text('Download from URL (Temp)'),
+            ),
+            ElevatedButton(
+              onPressed: downloadFromBase64,
+              child: Text('Download from Base64 (Temp)'),
+            ),
+            ElevatedButton(
+              onPressed: downloadToSpecificPath,
+              child: Text('Download to Specific Path'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
